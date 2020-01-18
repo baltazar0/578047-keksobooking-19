@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Ирина](https://up.htmlacademy.ru/javascript/19/user/578047).
-* Наставник: `Неизвестно`.
+* Наставник: 
 
 ---
 
