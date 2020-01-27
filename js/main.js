@@ -5,9 +5,9 @@ var LOCATION_X_MIN = 0;
 var LOCATION_X_MAX = 1200;
 var LOCATION_Y_MIN = 130;
 var LOCATION_Y_MAX = 630;
-var PIN_WIDTH = 65;
-var PIN_HEIGHT = 87;
-// var locationСorrectX = LOCATION_X_MIN - PIN_WIDTH / 2;
+var PIN_WIDTH = 50;
+var PIN_HEIGHT = 70;
+var locationСorrectX = LOCATION_X_MAX - PIN_WIDTH / 2;
 var locationСorrectY = LOCATION_Y_MAX - PIN_HEIGHT;
 var TYPE_OFFER = ['palace', 'flat', 'house', 'bungalo'];
 var CHECKIN_OFFER = ['12:00', '13:00', '14:00'];
@@ -69,7 +69,7 @@ var getAds = function () {
         photos: getRandomLengthArray(PHOTOS)
       },
       location: {
-        x: getRandomInteger(LOCATION_X_MIN, LOCATION_X_MAX),
+        x: getRandomInteger(LOCATION_X_MIN, locationСorrectX),
         y: getRandomInteger(LOCATION_Y_MIN, locationСorrectY)
       }
     };
@@ -82,13 +82,13 @@ map.classList.remove('map--faded');
 
 var renderAdItem = function (ad) {
   var pinElement = pinTemplate.cloneNode(true);
-  pinElement.style.left = ad.location.x + PIN_WIDTH / 2 + 'px';
-  pinElement.style.top = ad.location.y + PIN_HEIGHT + 'px';
+  pinElement.style.left = ad.location.x + 'px';
+  pinElement.style.top = ad.location.y + 'px';
   var img = pinElement.querySelector('img');
   img.src = ad.author.avatar;
   img.alt = ad.offer.title;
-  return pinElement
-}
+  return pinElement;
+};
 
 var renderAdsList = function (ads) {
   var fragment = document.createDocumentFragment();
@@ -96,7 +96,6 @@ var renderAdsList = function (ads) {
     fragment.appendChild(renderAdItem(ads[i]));
   }
   return fragment;
-}
-mapPins.appendChild(renderAdsList(getAds()))
+};
 
-
+mapPins.appendChild(renderAdsList(getAds()));
