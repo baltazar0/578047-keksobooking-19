@@ -155,7 +155,7 @@ var renderPhotosCard = function (photo, parent) {
   return parent.appendChild(photosFragment);
 };
 
-var renderCardItem = function (ad) {
+var renderCardItem = function (advert) {
   var cardElement = cardTemplate.cloneNode(true);
 
   var renderElementContent = function (className, data) {
@@ -167,17 +167,17 @@ var renderCardItem = function (ad) {
     }
   };
 
-  renderElementContent('.popup__title', ad.offer.title);
-  renderElementContent('.popup__text--address', ad.offer.address);
-  renderElementContent('.popup__text--price', ad.offer.price + ' ₽/ночь');
-  renderElementContent('.popup__type', translateIntoRus(TypesRu, ad.offer.type));
-  renderElementContent('.popup__text--capacity', ad.offer.rooms + ' комнаты для ' + ad.offer.guests + ' гостей');
-  renderElementContent('.popup__text--time', 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout);
-  renderElementContent('.popup__description', ad.offer.description);
+  renderElementContent('.popup__title', advert.offer.title);
+  renderElementContent('.popup__text--address', advert.offer.address);
+  renderElementContent('.popup__text--price', advert.offer.price + ' ₽/ночь');
+  renderElementContent('.popup__type', translateIntoRus(TypesRu, advert.offer.type));
+  renderElementContent('.popup__text--capacity', advert.offer.rooms + ' комнаты для ' + advert.offer.guests + ' гостей');
+  renderElementContent('.popup__text--time', 'Заезд после ' + advert.offer.checkin + ', выезд до ' + advert.offer.checkout);
+  renderElementContent('.popup__description', advert.offer.description);
 
-  renderFeaturesCard(ad.offer.features, cardElement.querySelector('.popup__features'));
-  renderPhotosCard(ad.offer.photos, cardElement.querySelector('.popup__photos'));
-  cardElement.querySelector('.popup__avatar').src = ad.author.avatar;
+  renderFeaturesCard(advert.offer.features, cardElement.querySelector('.popup__features'));
+  renderPhotosCard(advert.offer.photos, cardElement.querySelector('.popup__photos'));
+  cardElement.querySelector('.popup__avatar').src = advert.author.avatar;
   return cardElement;
 };
 
