@@ -81,9 +81,12 @@
     return map.insertBefore(fragment, document.querySelector('.map__filters-container'));
   };
 
+  var searchCard = function () {
+    return document.querySelector('.map__card');
+  };
+
   var closeCard = function () {
-    var card = document.querySelector('.map__card');
-    map.removeChild(card);
+    map.removeChild(searchCard());
   };
 
   var btnCloseClickHandler = function () {
@@ -95,8 +98,7 @@
   };
 
   var openCard = function (advert) {
-    var card = document.querySelector('.map__card');
-    if (card) {
+    if (searchCard()) {
       closeCard();
     }
     renderCardMap(advert);
