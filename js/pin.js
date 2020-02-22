@@ -25,7 +25,6 @@
 
 
   window.pin = {
-    getFragmentPins: getFragmentPins,
-    renderPin: renderPin
+    getFragmentPins: getFragmentPins
   };
 })();

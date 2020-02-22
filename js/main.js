@@ -26,7 +26,7 @@
     mapPinsContainer.appendChild(window.pin.getFragmentPins(window.data.getAdverts()));
     mapPinMain.removeEventListener('mousedown', mapPinMainClickHandler);
     mapPinMain.removeEventListener('keydown', mapPinMainKeydownHandler);
-    window.card.clickPin();
+    window.map.clickPin();
   };
 
   document.addEventListener('DOMContentLoaded', function () {
