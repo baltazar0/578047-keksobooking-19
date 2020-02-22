@@ -3,11 +3,11 @@
 (function () {
   var adForm = document.querySelector('.ad-form');
   // var adFormFieldset = adForm.querySelectorAll('fieldset');
-  // var inputAddress = adForm.querySelector('#address');
+  var inputAddress = adForm.querySelector('#address');
   // var mapFilters = document.querySelector('.map__filters');
   // var mapFiltersElement = mapFilters.children;
-  var PIN_WIDTH = 50;
-  var PIN_HEIGHT = 70;
+  // var PIN_WIDTH = 50;
+  // var PIN_HEIGHT = 70;
 
   var roomNumber = adForm.querySelector('#room_number');
   var guestNumber = adForm.querySelector('#capacity');
@@ -22,9 +22,9 @@
     '100': [CAPACITIY_NONE_GUESTS_VALUE]
   };
 
-  var getAddressInput = function (elem) {
+  var getAddressInput = function (elem, width, height) {
     var xy = elem.getBoundingClientRect();
-    return Math.round(xy.left + pageXOffset + PIN_WIDTH / 2) + ' : ' + Math.round(xy.top + pageYOffset + PIN_HEIGHT);
+    return (inputAddress.value = Math.round(xy.left + pageXOffset + width / 2) + ' : ' + Math.round(xy.top + pageYOffset + height));
   };
 
   var getCurrentOptionValue = function (select) {

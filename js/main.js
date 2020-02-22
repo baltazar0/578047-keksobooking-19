@@ -3,12 +3,13 @@
 (function () {
   var map = document.querySelector('.map');
   var adForm = document.querySelector('.ad-form');
-  var inputAddress = adForm.querySelector('#address');
   var mapPinMain = document.querySelector('.map__pin--main');
   var adFormFieldset = adForm.querySelectorAll('fieldset');
   var mapFilters = document.querySelector('.map__filters');
   var mapFiltersElement = mapFilters.children;
   var mapPinsContainer = document.querySelector('.map__pins');
+  var PIN_DEACTIVATE_WIDTH = 65;
+  var PIN_DEACTIVATE_HEIGHT = 65;
 
   var deactivatePage = function () {
     map.classList.add('map--faded');
@@ -31,7 +32,7 @@
 
   document.addEventListener('DOMContentLoaded', function () {
     deactivatePage();
-    inputAddress.value = window.form.getAddressInput(mapPinMain);
+    window.form.getAddressInput(mapPinMain, PIN_DEACTIVATE_WIDTH, PIN_DEACTIVATE_HEIGHT);
   });
 
   var mapPinMainClickHandler = function (evt) {
