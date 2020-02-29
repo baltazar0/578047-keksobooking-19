@@ -39,7 +39,7 @@
     var pinsCollection = map.querySelectorAll('.map__pin');
     for (var i = 1; i < pinsCollection.length; i++) {
       var pinElement = pinsCollection[i];
-      addClickListener(pinElement, window.data.getAdverts()[i - 1]);
+      addClickListener(pinElement, window.data.get()[i - 1]);
     }
   };
 

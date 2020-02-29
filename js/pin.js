@@ -5,6 +5,7 @@
   var pinTemplate = document.querySelector('#pin')
     .content
     .querySelector('.map__pin');
+  var mapPinsContainer = document.querySelector('.map__pins');
 
   var renderPin = function (advert) {
     var pinElement = pinTemplate.cloneNode(true);
@@ -23,8 +24,13 @@
     return fragment;
   };
 
+  var renderPinMap = function (data) {
+    mapPinsContainer.appendChild(getFragmentPins(data));
+
+  };
 
   window.pin = {
-    getFragmentPins: getFragmentPins
+    // getFragmentPins: getFragmentPins
+    renderPinMap: renderPinMap
   };
 })();
