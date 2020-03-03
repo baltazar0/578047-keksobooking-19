@@ -8,6 +8,9 @@
   // var mapFiltersElement = mapFilters.children;
   // var PIN_WIDTH = 50;
   // var PIN_HEIGHT = 70;
+  // var mapPinMain = document.querySelector('.map__pin--main');
+  // var PIN_DEACTIVATE_WIDTH = 65;
+  // var PIN_DEACTIVATE_HEIGHT = 65;
 
   var roomNumber = adForm.querySelector('#room_number');
   var guestNumber = adForm.querySelector('#capacity');
@@ -22,10 +25,13 @@
     '100': [CAPACITIY_NONE_GUESTS_VALUE]
   };
 
+  var submit = document.querySelector('.ad-form__submit');
+
   var getAddressInput = function (elem, width, height) {
     var xy = elem.getBoundingClientRect();
     return (inputAddress.value = Math.round(xy.left + pageXOffset + width / 2) + ' : ' + Math.round(xy.top + pageYOffset + height));
   };
+
 
   var getCurrentOptionValue = function (select) {
     return select.options[select.selectedIndex].value;
@@ -76,10 +82,22 @@
     }
   };
 
+  submit.addEventListener('submit', function (evt) {
+    // evt.preventDefault();
+    window.backend.save(new FormData(adForm), function (response) {
+        console.log('Данные отправлены');
+      },
+      function (error) {
+        console.log('Данные не отправлены');
+        // window.message.renderPopupError(error);
+      });
+  });
+
   window.form = {
     activateFieldset: activateFieldset,
     deactivateFieldset: deactivateFieldset,
     getAddressInput: getAddressInput,
+    // coordMainPin: coordMainPin,
     disabledGuestNumber: disabledGuestNumber
   };
 

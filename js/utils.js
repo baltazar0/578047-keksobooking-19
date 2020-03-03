@@ -21,13 +21,11 @@
     return newArr;
   };
 
-  function escPress(cb) {
-    return function (evt) {
-      if (evt.keyCode === ESC_KEY) {
-        cb();
-      }
-    };
-  }
+  var escPress = function (evt, cb) {
+    if (evt.key === ESC_KEY) {
+      cb();
+    }
+  };
 
   window.utils = {
     enter: ENTER_KEY,

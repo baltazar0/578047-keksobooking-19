@@ -10,7 +10,7 @@
 
   var MAIN_PIN_WIDTH = 65;
   var MAIN_PIN_HEIGHT = 84;
-  var mapPinMain = document.querySelector('.map__pin--main');
+  // var pin = document.querySelector('.map__pin--main');
 
   var dragRegion = {
     minX: BORDER.MIN_X - MAIN_PIN_WIDTH / 2,
@@ -30,46 +30,59 @@
     return coord;
   };
 
-  var pinMainMouseDownHandler = function (evt) {
-    evt.preventDefault();
-    var startCoords = {
-      x: evt.clientX,
-      y: evt.clientY
-    };
-    var pinMainMouseMoveHandler = function (moveEvt) {
-      moveEvt.preventDefault();
-      var shift = {
-        x: startCoords.x - moveEvt.clientX,
-        y: startCoords.y - moveEvt.clientY
+  var dragPin = function (pin) {
+    var pinMouseDownHandler = function (evt) {
+      evt.preventDefault();
+      var startCoords = {
+        x: evt.clientX,
+        y: evt.clientY
+      };
+      var pinMouseMoveHandler = function (moveEvt) {
+        moveEvt.preventDefault();
+        var shift = {
+          x: startCoords.x - moveEvt.clientX,
+          y: startCoords.y - moveEvt.clientY
+        };
+
+        startCoords = {
+          x: moveEvt.clientX,
+          y: moveEvt.clientY
+        };
+
+        var newCoords = {
+          x: pin.offsetLeft - shift.x,
+          y: pin.offsetTop - shift.y
+        };
+
+        var pinCoordX = getCoordsDrag(newCoords.x, dragRegion.minX, dragRegion.maxX);
+        var pinCoordY = getCoordsDrag(newCoords.y, dragRegion.minY, dragRegion.maxY);
+        pin.style.left = pinCoordX + 'px';
+        pin.style.top = pinCoordY + 'px';
+        window.form.getAddressInput(pin, MAIN_PIN_WIDTH, MAIN_PIN_HEIGHT);
       };
 
-      startCoords = {
-        x: moveEvt.clientX,
-        y: moveEvt.clientY
+      var pinMouseUpHandler = function (upEvt) {
+        upEvt.preventDefault();
+        document.removeEventListener('mousemove', pinMouseMoveHandler);
+        window.removeEventListener('mouseup', pinMouseUpHandler);
       };
 
-      var newCoords = {
-        x: mapPinMain.offsetLeft - shift.x,
-        y: mapPinMain.offsetTop - shift.y
-      };
-
-      var mapPinMainCoordX = getCoordsDrag(newCoords.x, dragRegion.minX, dragRegion.maxX);
-      var mapPinMainCoordY = getCoordsDrag(newCoords.y, dragRegion.minY, dragRegion.maxY);
-      mapPinMain.style.left = mapPinMainCoordX + 'px';
-      mapPinMain.style.top = mapPinMainCoordY + 'px';
-      window.form.getAddressInput(mapPinMain, MAIN_PIN_WIDTH, MAIN_PIN_HEIGHT);
+      document.addEventListener('mousemove', pinMouseMoveHandler);
+      window.addEventListener('mouseup', pinMouseUpHandler);
     };
 
-    var pinMainMouseUpHandler = function (upEvt) {
-      upEvt.preventDefault();
-      document.removeEventListener('mousemove', pinMainMouseMoveHandler);
-      window.removeEventListener('mouseup', pinMainMouseUpHandler);
-    };
-
-    document.addEventListener('mousemove', pinMainMouseMoveHandler);
-    window.addEventListener('mouseup', pinMainMouseUpHandler);
+    pin.addEventListener('mousedown', pinMouseDownHandler);
   };
 
-  mapPinMain.addEventListener('mousedown', pinMainMouseDownHandler);
+  // var dataGetError = function (pin) {
+  //   pin.removeEventListener('mousedown', pinMouseDownHandler);
+  // };
 
+  window.move = {
+    dragPin: dragPin
+    // dataGetError: dataGetError
+    //   dataError: function () {
+    //     pin.removeEventListener('mousedown', pinMouseDownHandler);
+    //   }
+  };
 })();

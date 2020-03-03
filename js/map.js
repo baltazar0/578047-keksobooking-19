@@ -6,7 +6,7 @@
   var searchCard = function () {
     return document.querySelector('.map__card');
   };
-
+  
   var closeCard = function () {
     map.removeChild(searchCard());
   };
@@ -15,20 +15,22 @@
     closeCard();
   };
 
-  var btnEscPressHandler = function () {
-    window.utils.escPress(closeCard());
+  var escPressHandler = function (evt) {
+    window.utils.escPress(evt, closeCard);
   };
 
   var openCard = function (advert) {
     if (searchCard()) {
       closeCard();
     }
+
     window.card.renderCardMap(advert);
     var btnCloseCard = document.querySelector('.popup__close');
     btnCloseCard.addEventListener('click', btnCloseClickHandler);
-    document.addEventListener('keydown', btnEscPressHandler);
+    document.addEventListener('keydown', escPressHandler);
+    btnCloseCard.focus();
   };
-
+  
   var addClickListener = function (button, advert) {
     button.addEventListener('click', function () {
       openCard(advert);
@@ -37,7 +39,7 @@
 
   var clickPin = function () {
     var pinsCollection = map.querySelectorAll('.map__pin');
-    for (var i = 1; i < pinsCollection.length; i++) {
+    for (var i = 1; i < pinsCollection.length; i++) { 
       var pinElement = pinsCollection[i];
       addClickListener(pinElement, window.data.get()[i - 1]);
     }
