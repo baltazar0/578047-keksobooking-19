@@ -4,13 +4,14 @@
   var adForm = document.querySelector('.ad-form');
   // var adFormFieldset = adForm.querySelectorAll('fieldset');
   var inputAddress = adForm.querySelector('#address');
+  var inputPrice = adForm.querySelector('#price');
+  var inputType = adForm.querySelector('#type');
+  var inputTimeIn = adForm.querySelector('#timein');
+  var inputTimeOut = adForm.querySelector('#timeout');
   // var mapFilters = document.querySelector('.map__filters');
   // var mapFiltersElement = mapFilters.children;
   // var PIN_WIDTH = 50;
   // var PIN_HEIGHT = 70;
-  // var mapPinMain = document.querySelector('.map__pin--main');
-  // var PIN_DEACTIVATE_WIDTH = 65;
-  // var PIN_DEACTIVATE_HEIGHT = 65;
 
   var roomNumber = adForm.querySelector('#room_number');
   var guestNumber = adForm.querySelector('#capacity');
@@ -25,17 +26,44 @@
     '100': [CAPACITIY_NONE_GUESTS_VALUE]
   };
 
-  var submit = document.querySelector('.ad-form__submit');
-
-  var getAddressInput = function (elem, width, height) {
-    var xy = elem.getBoundingClientRect();
-    return (inputAddress.value = Math.round(xy.left + pageXOffset + width / 2) + ' : ' + Math.round(xy.top + pageYOffset + height));
+  var MinPriceHousing = {
+    palace: 10000,
+    flat: 1000,
+    house: 5000,
+    bungalo: 0
   };
-
 
   var getCurrentOptionValue = function (select) {
     return select.options[select.selectedIndex].value;
   };
+
+  var getMinPrice = function () {
+    inputPrice.min = MinPriceHousing[getCurrentOptionValue(inputType)];
+    inputPrice.placeholder = inputPrice.min;
+  };
+
+  inputType.addEventListener('change', function () {
+    getMinPrice();
+  });
+
+  inputTimeIn.addEventListener('change', function () {
+    inputTimeOut.value = inputTimeIn.value;
+  });
+
+  inputTimeOut.addEventListener('change', function () {
+    inputTimeIn.value = inputTimeOut.value;
+  });
+
+  var getAddressInput = function (elem, width, height) {
+    var xy = elem.getBoundingClientRect();
+    inputAddress.value = Math.round(xy.left + pageXOffset + width / 2) + ' : ' + Math.round(xy.top + pageYOffset + height);
+    return inputAddress.value;
+    console.log(inputAddress.value)
+  };
+
+  inputAddress.addEventListener('change', function () {
+    getAddressInput();
+  });
 
   var disabledSelect = function (arr) {
     for (var i = 0; i < arr.length; i++) {
@@ -70,6 +98,7 @@
       }
     }
   });
+
   var deactivateFieldset = function (collection) {
     for (var i = 0; i < collection.length; i++) {
       collection[i].disabled = 'disabled';
@@ -82,22 +111,10 @@
     }
   };
 
-  submit.addEventListener('submit', function (evt) {
-    // evt.preventDefault();
-    window.backend.save(new FormData(adForm), function (response) {
-        console.log('Данные отправлены');
-      },
-      function (error) {
-        console.log('Данные не отправлены');
-        // window.message.renderPopupError(error);
-      });
-  });
-
   window.form = {
     activateFieldset: activateFieldset,
     deactivateFieldset: deactivateFieldset,
     getAddressInput: getAddressInput,
-    // coordMainPin: coordMainPin,
     disabledGuestNumber: disabledGuestNumber
   };
 
