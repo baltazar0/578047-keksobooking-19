@@ -15,18 +15,20 @@
     closeCard();
   };
 
-  var btnEscPressHandler = function () {
-    window.utils.escPress(closeCard());
+  var escPressHandler = function (evt) {
+    window.utils.escPress(evt, closeCard);
   };
 
   var openCard = function (advert) {
     if (searchCard()) {
       closeCard();
     }
+
     window.card.renderCardMap(advert);
     var btnCloseCard = document.querySelector('.popup__close');
     btnCloseCard.addEventListener('click', btnCloseClickHandler);
-    document.addEventListener('keydown', btnEscPressHandler);
+    document.addEventListener('keydown', escPressHandler);
+    btnCloseCard.focus();
   };
 
   var addClickListener = function (button, advert) {

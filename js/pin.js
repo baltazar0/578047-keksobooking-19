@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-  // var map = document.querySelector('.map');
   var pinTemplate = document.querySelector('#pin')
     .content
     .querySelector('.map__pin');
@@ -26,11 +25,17 @@
 
   var renderPinMap = function (data) {
     mapPinsContainer.appendChild(getFragmentPins(data));
+  };
 
+  var removePinMap = function () {
+    var collectionPins = mapPinsContainer.querySelectorAll('.map__pin');
+    for (var i = 1; i < collectionPins.length; i++) {
+      mapPinsContainer.removeChild(collectionPins[i]);
+    }
   };
 
   window.pin = {
-    // getFragmentPins: getFragmentPins
-    renderPinMap: renderPinMap
+    renderPinMap: renderPinMap,
+    removePinMap: removePinMap
   };
 })();

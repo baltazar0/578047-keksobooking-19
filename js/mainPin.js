@@ -7,15 +7,16 @@
   var adFormFieldset = adForm.querySelectorAll('fieldset');
   var mapFilters = document.querySelector('.map__filters');
   var mapFiltersElement = mapFilters.children;
-  var PIN_DEACTIVATE_WIDTH = 65;
-  var PIN_DEACTIVATE_HEIGHT = 65;
 
   var deactivatePage = function () {
     map.classList.add('map--faded');
     adForm.classList.add('ad-form--disabled');
+    window.pin.removePinMap();
+    window.form.formReset();
     window.form.deactivateFieldset(adFormFieldset);
     window.form.deactivateFieldset(mapFiltersElement);
-    window.form.getAddressInput(mapPinMain, PIN_DEACTIVATE_WIDTH, PIN_DEACTIVATE_HEIGHT);
+    activatePinMain();
+    window.move.dragPin();
   };
 
   var activatePage = function () {
@@ -25,28 +26,36 @@
     window.form.activateFieldset(mapFiltersElement);
     window.form.disabledGuestNumber();
     window.pin.renderPinMap(window.data.get());
-    mapPinMain.removeEventListener('mousedown', mapPinMainClickHandler);
-    mapPinMain.removeEventListener('keydown', mapPinMainKeydownHandler);
     window.map.clickPin();
+    deactivatePinMain();
   };
 
-  var mapPinMainClickHandler = function (evt) {
+  var pinMainClickHandler = function (evt) {
     if (evt.button === 0) {
       activatePage();
     }
   };
 
-  var mapPinMainKeydownHandler = function (evt) {
+  var pinMainKeydownHandler = function (evt) {
     if (evt.key === window.utils.enter) {
       activatePage();
     }
   };
 
-  mapPinMain.addEventListener('mousedown', mapPinMainClickHandler);
+  var activatePinMain = function () {
+    mapPinMain.addEventListener('mousedown', pinMainClickHandler);
+    mapPinMain.addEventListener('keydown', pinMainKeydownHandler);
+  };
 
-  mapPinMain.addEventListener('keydown', mapPinMainKeydownHandler);
+  var deactivatePinMain = function () {
+    mapPinMain.removeEventListener('mousedown', pinMainClickHandler);
+    mapPinMain.removeEventListener('keydown', pinMainKeydownHandler);
+  };
 
   window.mainPin = {
+    activatePinMain: activatePinMain,
+    deactivatePinMain: deactivatePinMain,
+    mapPinMain: mapPinMain,
     deactivatePage: deactivatePage
   };
 })();

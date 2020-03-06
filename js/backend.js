@@ -2,7 +2,7 @@
 
 (function () {
   var URL = {
-    // SAVE: 'https://js.dump.academy/code-and-magick',
+    SAVE: 'https://js.dump.academy/keksobooking',
     LOAD: 'https://js.dump.academy/keksobooking/data'
   };
   var TIMEOUT = 1000;
@@ -24,7 +24,7 @@
     SERVER_ERROR: 'Внутренняя ошибка сервера.'
   };
   var Error = {
-    CONNECT: 'Произошла ошибка соединения',
+    CONNECT: 'Произошла ошибка соединения, перезагрузите страницу',
     TIMEOUT: 'Запрос не успел выполниться за '
   };
   var TIME_UNIT = 'мс';
@@ -66,23 +66,23 @@
 
     xhr.timeout = TIMEOUT;
     xhr.addEventListener('timeout', function () {
-      onError(Error.TIMEOUT + xhr.timeout + TIME_UNIT);
+      onError(Error.TIMEOUT + xhr.timeout + ' ' + TIME_UNIT);
     });
 
     xhr.open(metod, url);
     xhr.send(data);
   };
 
-  // var save = function (data, onLoad, onError) {
-  //   request('POST', URL.SAVE, data, onLoad, onError);
-  // };
+  var save = function (data, onLoad, onError) {
+    request('POST', URL.SAVE, data, onLoad, onError);
+  };
 
   var load = function (onLoad, onError) {
     request('GET', URL.LOAD, null, onLoad, onError);
   };
 
   window.backend = {
-    // save: save,
+    save: save,
     load: load
   };
 })();

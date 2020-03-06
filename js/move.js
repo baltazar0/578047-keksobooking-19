@@ -10,7 +10,7 @@
 
   var MAIN_PIN_WIDTH = 65;
   var MAIN_PIN_HEIGHT = 84;
-  var mapPinMain = document.querySelector('.map__pin--main');
+  var pin = window.mainPin.mapPinMain;
 
   var dragRegion = {
     minX: BORDER.MIN_X - MAIN_PIN_WIDTH / 2,
@@ -30,13 +30,13 @@
     return coord;
   };
 
-  var pinMainMouseDownHandler = function (evt) {
+  var pinMouseDownHandler = function (evt) {
     evt.preventDefault();
     var startCoords = {
       x: evt.clientX,
       y: evt.clientY
     };
-    var pinMainMouseMoveHandler = function (moveEvt) {
+    var pinMouseMoveHandler = function (moveEvt) {
       moveEvt.preventDefault();
       var shift = {
         x: startCoords.x - moveEvt.clientX,
@@ -49,27 +49,37 @@
       };
 
       var newCoords = {
-        x: mapPinMain.offsetLeft - shift.x,
-        y: mapPinMain.offsetTop - shift.y
+        x: pin.offsetLeft - shift.x,
+        y: pin.offsetTop - shift.y
       };
 
-      var mapPinMainCoordX = getCoordsDrag(newCoords.x, dragRegion.minX, dragRegion.maxX);
-      var mapPinMainCoordY = getCoordsDrag(newCoords.y, dragRegion.minY, dragRegion.maxY);
-      mapPinMain.style.left = mapPinMainCoordX + 'px';
-      mapPinMain.style.top = mapPinMainCoordY + 'px';
-      window.form.getAddressInput(mapPinMain, MAIN_PIN_WIDTH, MAIN_PIN_HEIGHT);
+      var pinCoordX = getCoordsDrag(newCoords.x, dragRegion.minX, dragRegion.maxX);
+      var pinCoordY = getCoordsDrag(newCoords.y, dragRegion.minY, dragRegion.maxY);
+      pin.style.left = pinCoordX + 'px';
+      pin.style.top = pinCoordY + 'px';
+      window.form.getAddressInput(pin, MAIN_PIN_WIDTH, MAIN_PIN_HEIGHT);
     };
 
-    var pinMainMouseUpHandler = function (upEvt) {
+    var pinMouseUpHandler = function (upEvt) {
       upEvt.preventDefault();
-      document.removeEventListener('mousemove', pinMainMouseMoveHandler);
-      window.removeEventListener('mouseup', pinMainMouseUpHandler);
+      document.removeEventListener('mousemove', pinMouseMoveHandler);
+      window.removeEventListener('mouseup', pinMouseUpHandler);
     };
 
-    document.addEventListener('mousemove', pinMainMouseMoveHandler);
-    window.addEventListener('mouseup', pinMainMouseUpHandler);
+    document.addEventListener('mousemove', pinMouseMoveHandler);
+    window.addEventListener('mouseup', pinMouseUpHandler);
   };
 
-  mapPinMain.addEventListener('mousedown', pinMainMouseDownHandler);
+  var dragPin = function () {
+    pin.addEventListener('mousedown', pinMouseDownHandler);
+  };
 
+  var removeDragPin = function () {
+    pin.removeEventListener('mousedown', pinMouseDownHandler);
+  };
+
+  window.move = {
+    dragPin: dragPin,
+    removeDragPin: removeDragPin
+  };
 })();
