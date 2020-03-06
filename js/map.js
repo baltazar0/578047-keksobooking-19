@@ -6,7 +6,7 @@
   var searchCard = function () {
     return document.querySelector('.map__card');
   };
-  
+
   var closeCard = function () {
     map.removeChild(searchCard());
   };
@@ -30,7 +30,7 @@
     document.addEventListener('keydown', escPressHandler);
     btnCloseCard.focus();
   };
-  
+
   var addClickListener = function (button, advert) {
     button.addEventListener('click', function () {
       openCard(advert);
@@ -39,7 +39,7 @@
 
   var clickPin = function () {
     var pinsCollection = map.querySelectorAll('.map__pin');
-    for (var i = 1; i < pinsCollection.length; i++) { 
+    for (var i = 1; i < pinsCollection.length; i++) {
       var pinElement = pinsCollection[i];
       addClickListener(pinElement, window.data.get()[i - 1]);
     }

@@ -8,10 +8,16 @@
   var inputType = adForm.querySelector('#type');
   var inputTimeIn = adForm.querySelector('#timein');
   var inputTimeOut = adForm.querySelector('#timeout');
+  var buttonReset = adForm.querySelector('.ad-form__reset');
   // var mapFilters = document.querySelector('.map__filters');
   // var mapFiltersElement = mapFilters.children;
   // var PIN_WIDTH = 50;
   // var PIN_HEIGHT = 70;
+  var mapPinMain = document.querySelector('.map__pin--main');
+  var MAIN_PIN_DEACTIVATE_WIDTH = 65;
+  var MAIN_PIN_DEACTIVATE_HEIGHT = 65;
+  var DEFAULT_COORDINATES = 'left: 570px; top: 375px;';
+  var DEFAULT_PLACEHOLDER = '5000';
 
   var roomNumber = adForm.querySelector('#room_number');
   var guestNumber = adForm.querySelector('#capacity');
@@ -55,15 +61,12 @@
   });
 
   var getAddressInput = function (elem, width, height) {
-    var xy = elem.getBoundingClientRect();
-    inputAddress.value = Math.round(xy.left + pageXOffset + width / 2) + ' : ' + Math.round(xy.top + pageYOffset + height);
-    return inputAddress.value;
-    console.log(inputAddress.value)
-  };
+    var elemCoordX = Math.round(elem.offsetLeft + width / 2);
+    var elemCoordY = Math.round(elem.offsetTop + height);
 
-  inputAddress.addEventListener('change', function () {
-    getAddressInput();
-  });
+    inputAddress.value = elemCoordX + ' : ' + elemCoordY;
+    return inputAddress.value;
+  };
 
   var disabledSelect = function (arr) {
     for (var i = 0; i < arr.length; i++) {
@@ -111,11 +114,35 @@
     }
   };
 
+  adForm.addEventListener('submit', function (evt) {
+    window.backend.save(new FormData(adForm), function () {
+      window.mainPin.deactivatePage();
+      window.message.renderPopuSuccess();
+    }, function (errorMessage) {
+      window.message.renderPopupError(errorMessage);
+    });
+    evt.preventDefault();
+  });
+
+  var formReset = function () {
+    adForm.reset();
+    mapPinMain.style = DEFAULT_COORDINATES;
+    getAddressInput(mapPinMain, MAIN_PIN_DEACTIVATE_WIDTH, MAIN_PIN_DEACTIVATE_HEIGHT);
+    inputPrice.placeholder = DEFAULT_PLACEHOLDER;
+  };
+
+  var formResetClickHandler = function () {
+    window.mainPin.deactivatePage();
+  };
+
+  buttonReset.addEventListener('click', formResetClickHandler);
+
   window.form = {
     activateFieldset: activateFieldset,
     deactivateFieldset: deactivateFieldset,
     getAddressInput: getAddressInput,
-    disabledGuestNumber: disabledGuestNumber
+    disabledGuestNumber: disabledGuestNumber,
+    formReset: formReset
   };
 
 })();
