@@ -7,6 +7,7 @@
       setAdverts = adverts;
     },
     get: function () {
+      // console.log(setAdverts)
       return setAdverts;
     }
   };
