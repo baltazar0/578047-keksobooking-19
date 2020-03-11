@@ -13,6 +13,7 @@
     adForm.classList.add('ad-form--disabled');
     window.pin.removePinMap();
     window.form.formReset();
+    window.filter.filterReset();
     window.form.deactivateFieldset(adFormFieldset);
     window.form.deactivateFieldset(mapFiltersElement);
     activatePinMain();
@@ -26,7 +27,7 @@
     window.form.activateFieldset(mapFiltersElement);
     window.form.disabledGuestNumber();
     window.pin.renderPinMap(window.data.get());
-    window.map.clickPin();
+    // window.map.clickPin();
     deactivatePinMain();
   };
 

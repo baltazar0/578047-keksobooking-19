@@ -19,11 +19,14 @@
     window.utils.escPress(evt, closeCard);
   };
 
-  var openCard = function (advert) {
+  var checkingForCard = function () {
     if (searchCard()) {
       closeCard();
     }
+  };
 
+  var openCard = function (advert) {
+    checkingForCard();
     window.card.renderCardMap(advert);
     var btnCloseCard = document.querySelector('.popup__close');
     btnCloseCard.addEventListener('click', btnCloseClickHandler);
@@ -31,21 +34,9 @@
     btnCloseCard.focus();
   };
 
-  var addClickListener = function (button, advert) {
-    button.addEventListener('click', function () {
-      openCard(advert);
-    });
-  };
-
-  var clickPin = function () {
-    var pinsCollection = map.querySelectorAll('.map__pin');
-    for (var i = 1; i < pinsCollection.length; i++) {
-      var pinElement = pinsCollection[i];
-      addClickListener(pinElement, window.data.get()[i - 1]);
-    }
-  };
-
   window.map = {
-    clickPin: clickPin
+    checkingForCard: checkingForCard,
+    openCard: openCard,
+    closeCard: closeCard
   };
 })();
