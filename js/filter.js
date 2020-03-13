@@ -2,8 +2,14 @@
 
 (function () {
   var filtersMap = document.querySelector('.map__filters');
-  var filterList = filtersMap.querySelectorAll('.map__filter');
+  // var filterList = filtersMap.querySelectorAll('.map__filter');
+  var featuresList = Array.from(filtersMap.querySelectorAll('input[type="checkbox"]'));
 
+
+  var PriceRange = {
+    MIN: 10000,
+    MAX: 50000
+  };
 
   var Filter = {
     TYPE: 'housing-type',
@@ -13,70 +19,110 @@
     FEATURES: 'housing-features'
   };
 
+  var getPriceRange = function (price) {
+    var value = '';
+    if (price < PriceRange.MIN) {
+      value = 'low';
+    } else if (price >= PriceRange.MIN && price < PriceRange.MAX) {
+      value = 'middle';
+    } else if (price >= PriceRange.MAX) {
+      value = 'high';
+    }
+    return value;
+  };
+
+  var filterValuePrice = function (arr, value, filter) {
+    if (getValue(filter) !== 'any') {
+      arr = arr.filter(function (it) {
+        return getPriceRange(it.offer[value]) === getValue(filter);
+      });
+    }
+    return arr;
+  };
+
   var getValue = function (select) {
     var selectedValue = document.querySelector('#' + select).value;
     return selectedValue;
   };
 
-  // var filterValue = function (arr, value, filter) {
-  //   // console.log(getValue(filter))
-  //   return (getValue(filter) !== 'any') ? arr.filter(function (it) {
-  //     console.log(getValue(filter)); return it.offer[value] === getValue(filter);
-  //   }) : arr;
+  var filterValue = function (arr, value, filter) {
+    return (getValue(filter) !== 'any') ? arr.filter(function (it) {
+      return String(it.offer[value]) === getValue(filter);
+    }) : arr;
+  };
+
+
+  var getFeaturesChecked = function (arr) {
+    var featuresChecked = [];
+    arr.forEach(function (it) {
+      if (it.checked) {
+        console.log(it.checked);
+        console.log(it.value);
+        featuresChecked.push(it.value);
+      }
+      console.log(featuresChecked);
+      return featuresChecked;
+    });
+  };
+  // var getFeaturesChecked = function (arr) {
+  //   var featuresChecked = [];
+  //   arr.forEach(function (it) {
+  //     if (it.checked) {
+  //       console.log(it.checked);
+  //       console.log(it.value);
+  //       featuresChecked.push(it.value);
+  //     }
+  //     console.log(featuresChecked);
+  //     return featuresChecked;
+  //   });
   // };
 
 
-  var filterValue = function (arr, value, filter) {
-    if (getValue(filter) !== 'any') {
-      arr = arr.filter(function (it) {
-        // console.log(getValue(filter))
-        return it.offer[value] === getValue(filter);
-      });
-    } else {
-      arr = arr;
-    }
-    return arr;
-  };
 
-  var getFilterData = function () {
-    // window.map.checkingForCard();
-    // var data = null;
+  var getFilterData = function (evt) {
     var filterData = window.data.get().slice();
-    // console.log(filterData)
-    filterList.forEach(function (item) {
-      switch (item.id) {
-        case Filter.TYPE:
-          filterData = filterValue(filterData, 'type', Filter.TYPE);
-          break;
-        case Filter.PRICE:
-          // data = sortNewPhoto(window.data.get());
-          break;
-        // getValue(Filter.PRICE);
-        case Filter.ROOMS:
-          // data = sortCommentsPhoto(window.data.get());
-          getValue(Filter.ROOMS);
-          break;
-      }
-    });
-
-    // console.log(filterData)
+    switch (evt.target.id) {
+      case Filter.TYPE:
+        filterData = filterValue(filterData, 'type', Filter.TYPE);
+        break;
+      case Filter.ROOMS:
+        filterData = filterValue(filterData, 'rooms', Filter.ROOMS);
+        break;
+      case Filter.GUESTS:
+        filterData = filterValue(filterData, 'guests', Filter.GUESTS);
+        break;
+      case Filter.PRICE:
+        filterData = filterValuePrice(filterData, 'price', Filter.PRICE);
+        break;
+      case featuresList:
+        // filterData = filterValuePrice(filterData, 'price', Filter.PRICE);
+        filterData = featuresList;
+        break;
+    }
+    // getFeaturesChecked(filterData)
+    // getFeaturesChecked().forEach(function (it) {
+    //   filterData = filterByFeatures(filterData, item.value);
+    // });
+    // filterData = filterValuePrice(filterData, 'price', Filter.PRICE);
+    // filterData = getFeaturesChecked(filterData);
     return filterData;
   };
 
-  var filterChangeHandler = function () {
-    return window.pin.renderPinMap(getFilterData());
-  };
 
 
-  filtersMap.addEventListener('change', filterChangeHandler);
+  filtersMap.addEventListener('change', function (evt) {
+    console.log(evt.target.id + ' обработчик')
+    window.map.checkingForCard();
+    getFilterData(evt);
+    window.pin.renderPinMap(getFilterData(evt));
+  });
 
-
+  // console.log(featuresList);
   var filterReset = function () {
     filtersMap.reset();
   };
 
   window.filter = {
-    // changeFilter: changeFilter,
     filterReset: filterReset
   };
 })();
